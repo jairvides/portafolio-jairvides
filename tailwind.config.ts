@@ -10,8 +10,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
+        body: ['Alegreya', 'serif'],
+        headline: ['Belleza', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {
@@ -55,6 +55,8 @@ export default {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
+        // Sidebar colors are not explicitly used in this portfolio,
+        // but kept for consistency with the original scaffold if needed elsewhere.
         sidebar: {
           DEFAULT: 'hsl(var(--sidebar-background))',
           foreground: 'hsl(var(--sidebar-foreground))',
