@@ -9,6 +9,12 @@ export interface Skill {
   icon?: React.ComponentType<{ className?: string }>; // Optional: for Lucide icons
 }
 
+export interface ContactInfo {
+  phone?: string;
+  email?: string;
+  website?: string;
+}
+
 export interface ProfileData {
   fullName: string;
   title: TranslatableContent;
@@ -22,21 +28,22 @@ export interface ProfileData {
   languages: Array<{ name: TranslatableContent; level: TranslatableContent }>;
   workExperience: Array<{
     role: TranslatableContent;
-    company: TranslatableContent; // Added for clarity
+    company: TranslatableContent; 
     period: TranslatableContent;
     description: TranslatableContent;
   }>;
   education: Array<{
     degree: TranslatableContent;
-    institution: string; // Institution name likely same in both languages
+    institution: string; 
     year: string;
   }>;
+  contact?: ContactInfo; // Optional contact details for PDF
 }
 
 export interface Project {
   name: TranslatableContent;
   description: TranslatableContent;
-  technologies: string[]; // Technology names usually consistent
+  technologies: string[]; 
   link: string;
   imageUrl: string;
   dataAiHint: string;
@@ -54,7 +61,7 @@ export const profileData: ProfileData = {
     en: "Technologist in Analysis and Development of Information Systems" 
   },
   location: "Algarrobo, Colombia",
-  profilePictureUrl: "https://placehold.co/300x300.png",
+  profilePictureUrl: "https://placehold.co/300x300.png", // Replace with your actual image URL
   dataAiHint: "professional headshot",
   aboutMe: {
     es: "Soy oriundo de Colombia, tengo 34 años y me apasiona estar a la vanguardia de la tecnología. Me caracterizo por ser una persona responsable que se adapta fácilmente al ambiente de trabajo. Me encanta el Desarrollo de Aplicaciones Web, el trabajo en equipo es mi fuerte y cuento con experiencia utilizando diversas tecnologías modernas.",
@@ -63,6 +70,11 @@ export const profileData: ProfileData = {
   professionalSummary: {
     es: "Desarrollador Front-End con experiencia en la creación de páginas y aplicaciones web interactivas y responsivas. Apasionado por entregar soluciones innovadoras y eficientes que mejoran la experiencia del usuario. Busco aplicar mis habilidades para contribuir al desarrollo de proyectos desafiantes.",
     en: "Front-End Developer experienced in creating interactive and responsive web pages and applications. Passionate about delivering innovative and efficient solutions that enhance user experience. I seek to apply my skills to contribute to challenging projects."
+  },
+  contact: { // Added contact details for PDF
+    phone: "+57 300 123 4567", // Example, replace with actual
+    email: "jair.vides@example.com", // Example, replace with actual
+    website: "portfolio.example.com" // Example, replace with actual
   },
   technicalSkills: [
     { es: "React", en: "React" },
@@ -128,7 +140,6 @@ export const projectsData: Project[] = [
     imageUrl: "https://placehold.co/600x400.png",
     dataAiHint: "streaming interface"
   },
-  // Add 2-5 more projects here following the same structure
   {
     name: { es: "Sistema de Gestión de Notas", en: "Grade Management System" },
     description: { 
@@ -136,7 +147,7 @@ export const projectsData: Project[] = [
       en: "Web application for educational institutions allowing teachers to record grades, and students/guardians to consult them. Focused on usability and data security."
     },
     technologies: ["React", "Node.js", "Express", "PostgreSQL", "JWT"],
-    link: "https://github.com/jairvides/grade-system", // Example link
+    link: "https://github.com/jairvides/grade-system", 
     imageUrl: "https://placehold.co/600x400.png",
     dataAiHint: "education dashboard"
   },
@@ -147,7 +158,7 @@ export const projectsData: Project[] = [
       en: "E-commerce platform for a small local business, featuring a product catalog, shopping cart, and a basic admin panel for inventory and order management."
     },
     technologies: ["JavaScript (Vanilla)", "HTML5", "CSS3", "Firebase (Firestore & Auth)"],
-    link: "https://github.com/jairvides/simple-ecommerce", // Example link
+    link: "https://github.com/jairvides/simple-ecommerce", 
     imageUrl: "https://placehold.co/600x400.png",
     dataAiHint: "online shop"
   },

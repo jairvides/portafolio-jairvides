@@ -1,22 +1,96 @@
 
 "use client";
 import Image from 'next/image';
-import { profileData, siteTranslations } from '@/data/portfolio-data';
+import { profileData, interestsData, siteTranslations } from '@/data/portfolio-data';
 import { useLanguage } from '@/hooks/use-language';
 import Section from './Section';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Download, Briefcase, GraduationCap, Users, Code, LanguagesIcon, MapPin, UserCircle } from 'lucide-react';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import PdfCvLayout from './PdfCvLayout';
+import ReactDOM from 'react-dom/client';
+import {createElement, useEffect, useState} from 'react';
+
 
 const ProfileSection = () => {
   const { language, translations } = useLanguage();
   const content = profileData;
   const sectionTitles = translations.sections || siteTranslations.sections;
   const buttonLabels = translations.buttons || siteTranslations.buttons;
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
-  const handleExportPdf = () => {
-    window.print();
+  const handleExportPdf = async () => {
+    setIsGeneratingPdf(true);
+    const pdfContainer = document.createElement('div');
+    pdfContainer.style.position = 'absolute';
+    pdfContainer.style.left = '-9999px'; // Position off-screen
+    pdfContainer.style.width = '210mm'; // A4 width for rendering
+    document.body.appendChild(pdfContainer);
+
+    const root = ReactDOM.createRoot(pdfContainer);
+    
+    // Ensure translations are loaded before rendering PDF layout
+    // The LanguageProvider should handle this, but direct check might be safer if timing issues occur
+    const currentTranslations = translations || await (async () => {
+        const dataModule = await import('@/data/portfolio-data');
+        return dataModule.siteTranslations;
+    })();
+
+    root.render(
+      createElement(PdfCvLayout, {
+        profile: profileData,
+        interests: interestsData,
+        language: language,
+        translations: currentTranslations
+      })
+    );
+
+    // Wait for the component to render fully
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    try {
+      const canvas = await html2canvas(pdfContainer, {
+        scale: 2, // Increase scale for better quality
+        useCORS: true, // For external images
+        logging: false,
+      });
+      
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      
+      const imgProps = pdf.getImageProperties(imgData);
+      const imgWidth = pdfWidth;
+      const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+
+      let heightLeft = imgHeight;
+      let position = 0;
+      const pageMargin = 0; // No margin, image covers full page
+
+      pdf.addImage(imgData, 'PNG', pageMargin, position, imgWidth - (pageMargin*2) , imgHeight - (pageMargin*2));
+      heightLeft -= pdfHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', pageMargin, position, imgWidth - (pageMargin*2), imgHeight- (pageMargin*2));
+        heightLeft -= pdfHeight;
+      }
+      
+      pdf.save(`CV_${profileData.fullName.replace(/\s/g, '_')}.pdf`);
+
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      // Optionally, show a toast notification for the error
+    } finally {
+      root.unmount();
+      document.body.removeChild(pdfContainer);
+      setIsGeneratingPdf(false);
+    }
   };
 
   return (
@@ -41,9 +115,10 @@ const ProfileSection = () => {
               <span>{content.location}</span>
             </div>
           </div>
-           <Button onClick={handleExportPdf} className="w-full md:w-auto group">
-            {buttonLabels.exportPdf[language]}
-            <Download className="ml-2 h-4 w-4 group-hover:animate-bounce" />
+           <Button onClick={handleExportPdf} className="w-full md:w-auto group" disabled={isGeneratingPdf}>
+            {isGeneratingPdf ? (buttonLabels.exportPdf[language].replace("Exportar","Generando...") || "Generating...") : buttonLabels.exportPdf[language]}
+            {!isGeneratingPdf && <Download className="ml-2 h-4 w-4 group-hover:animate-bounce" />}
+            {isGeneratingPdf && <span className="ml-2 h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-primary"></span>}
           </Button>
         </div>
 
