@@ -3,7 +3,7 @@
 import { interestsData, siteTranslations } from '@/data/portfolio-data';
 import { useLanguage } from '@/hooks/use-language';
 import Section from './Section';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card'; // Removed CardHeader, CardTitle
 import { CheckCircle2 } from 'lucide-react';
 
 const InterestsSection = () => {
