@@ -64,14 +64,13 @@ const PdfCvLayout = ({ profile, interests, language, translations }: PdfCvLayout
       {/* Left Column */}
       <div className="w-1/3 bg-blue-700 text-white p-3 space-y-3">
         <div className="flex flex-col items-center">
-          <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-white mb-2 shadow-sm">
+          <div className="relative w-28 h-28 rounded-full overflow-hidden border-2 border-white mb-2 shadow-sm">
             <Image 
               src={profile.profilePictureUrl} 
               alt={profile.fullName} 
-              width={112} 
-              height={112} 
-              className="object-cover"
-              priority // Added priority to potentially help with html2canvas rendering
+              layout="fill"
+              objectFit="cover"
+              priority 
               data-ai-hint={profile.dataAiHint}
             />
           </div>
@@ -179,4 +178,3 @@ const PdfCvLayout = ({ profile, interests, language, translations }: PdfCvLayout
 };
 
 export default PdfCvLayout;
-
