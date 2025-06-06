@@ -13,6 +13,8 @@ export interface ContactInfo {
   phone?: string;
   email?: string;
   website?: string;
+  githubUrl?: string; // Added for social links
+  linkedinUrl?: string; // Added for social links
 }
 
 export interface ProfileData {
@@ -37,7 +39,7 @@ export interface ProfileData {
     institution: string; 
     year: string;
   }>;
-  contact?: ContactInfo; // Optional contact details for PDF
+  contact?: ContactInfo; 
 }
 
 export interface Project {
@@ -61,7 +63,7 @@ export const profileData: ProfileData = {
     en: "Technologist in Analysis and Development of Information Systems" 
   },
   location: "Algarrobo, Colombia",
-  profilePictureUrl: "https://placehold.co/300x300.png", // Replace with your actual image URL
+  profilePictureUrl: "https://placehold.co/300x300.png", 
   dataAiHint: "professional headshot",
   aboutMe: {
     es: "Soy oriundo de Colombia, tengo 34 años y me apasiona estar a la vanguardia de la tecnología. Me caracterizo por ser una persona responsable que se adapta fácilmente al ambiente de trabajo. Me encanta el Desarrollo de Aplicaciones Web, el trabajo en equipo es mi fuerte y cuento con experiencia utilizando diversas tecnologías modernas.",
@@ -71,10 +73,12 @@ export const profileData: ProfileData = {
     es: "Desarrollador Front-End con experiencia en la creación de páginas y aplicaciones web interactivas y responsivas. Apasionado por entregar soluciones innovadoras y eficientes que mejoran la experiencia del usuario. Busco aplicar mis habilidades para contribuir al desarrollo de proyectos desafiantes.",
     en: "Front-End Developer experienced in creating interactive and responsive web pages and applications. Passionate about delivering innovative and efficient solutions that enhance user experience. I seek to apply my skills to contribute to challenging projects."
   },
-  contact: { // Added contact details for PDF
-    phone: "+57 300 123 4567", // Example, replace with actual
-    email: "jair.vides@example.com", // Example, replace with actual
-    website: "portfolio.example.com" // Example, replace with actual
+  contact: { 
+    phone: "+57 300 123 4567", 
+    email: "jair.vides@example.com", 
+    website: "portfolio.example.com",
+    githubUrl: "https://github.com/jairvides", // Replace with your actual GitHub URL
+    linkedinUrl: "https://linkedin.com/in/jairvides", // Replace with your actual LinkedIn URL
   },
   technicalSkills: [
     { es: "React", en: "React" },
