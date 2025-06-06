@@ -71,6 +71,7 @@ const PdfCvLayout = ({ profile, interests, language, translations }: PdfCvLayout
               width={112} 
               height={112} 
               className="object-cover"
+              priority // Added priority to potentially help with html2canvas rendering
               data-ai-hint={profile.dataAiHint}
             />
           </div>
@@ -79,8 +80,8 @@ const PdfCvLayout = ({ profile, interests, language, translations }: PdfCvLayout
         </div>
 
         <div>
-          <LeftSectionTitle icon={<MapPin size={18} />} title={contactLabels.location[language]} />
-          <div className="space-y-1 text-xs"> 
+          <LeftSectionTitle icon={<MapPin size={16} />} title={contactLabels.location[language]} />
+          <div className="space-y-1 text-[11px]"> 
             <p className="flex items-center"><MapPin size={12} className="mr-1.5 flex-shrink-0" /> {contactDetails.location}</p>
             <p className="flex items-center"><Phone size={12} className="mr-1.5 flex-shrink-0" /> {contactDetails.phone}</p>
             <p className="flex items-center"><Mail size={12} className="mr-1.5 flex-shrink-0" /> {contactDetails.email}</p>
@@ -90,14 +91,14 @@ const PdfCvLayout = ({ profile, interests, language, translations }: PdfCvLayout
         
         <div>
           <LeftSectionTitle 
-            icon={<Cpu size={18} />} 
+            icon={<Cpu size={16} />} 
             title={sectionTitles.skillsTitle?.[language] || "Habilidades"} 
           />
-          <div className="text-xs space-y-0.5 mb-1.5"> 
+          <div className="text-[11px] space-y-0.5 mb-1.5 leading-normal"> 
             <h4 className="font-semibold text-blue-100 mb-0.5 text-sm">{sectionTitles.technicalSkillsTitle?.[language] || "Técnicas"}</h4>
             <p className="leading-normal">{profile.technicalSkills.map(skill => getTranslation(skill)).join(', ')}</p>
           </div>
-          <div className="text-xs space-y-0.5">
+          <div className="text-[11px] space-y-0.5 leading-normal">
             <h4 className="font-semibold text-blue-100 mb-0.5 text-sm">{sectionTitles.softSkillsTitle?.[language] || "Blandas"}</h4>
             <p className="leading-normal">{profile.softSkills.map(skill => getTranslation(skill)).join(', ')}</p>
           </div>
@@ -105,10 +106,10 @@ const PdfCvLayout = ({ profile, interests, language, translations }: PdfCvLayout
         
         <div>
           <LeftSectionTitle 
-            icon={<LanguagesIcon size={18} />} 
+            icon={<LanguagesIcon size={16} />} 
             title={sectionTitles.languagesTitle?.[language] || "Idiomas"} 
           />
-          <ul className="space-y-0.5 text-xs"> 
+          <ul className="space-y-0.5 text-[11px]"> 
             {profile.languages.map((lang, i) => (
               <li key={`lang-${i}`}>
                 <span className="font-semibold">{getTranslation(lang.name)}:</span> {getTranslation(lang.level)}
@@ -119,10 +120,10 @@ const PdfCvLayout = ({ profile, interests, language, translations }: PdfCvLayout
 
         <div>
           <LeftSectionTitle 
-            icon={<Heart size={18} />} 
+            icon={<Heart size={16} />} 
             title={sectionTitles.interestsTitle?.[language] || interests.title[language] }
           />
-          <p className="text-xs leading-normal">
+          <p className="text-[11px] leading-normal">
             {getShortInterestText(interests.items)}
           </p>
         </div>
@@ -132,7 +133,7 @@ const PdfCvLayout = ({ profile, interests, language, translations }: PdfCvLayout
       <div className="w-2/3 p-4 space-y-3 bg-white text-gray-700">
         <div>
           <SectionTitle 
-            icon={<UserCircle size={20} />} 
+            icon={<UserCircle size={18} />} 
             title={sectionTitles.profileTitle?.[language] || "Sobre Mí"} 
           />
           <p className="text-xs leading-normal">{getTranslation(profile.aboutMe)}</p>
@@ -143,7 +144,7 @@ const PdfCvLayout = ({ profile, interests, language, translations }: PdfCvLayout
 
         <div>
           <SectionTitle 
-            icon={<Briefcase size={20} />} 
+            icon={<Briefcase size={18} />} 
             title={sectionTitles.experienceTitle?.[language] || "Experiencia Laboral"} 
           />
           <div className="space-y-2.5"> 
@@ -159,7 +160,7 @@ const PdfCvLayout = ({ profile, interests, language, translations }: PdfCvLayout
 
         <div>
           <SectionTitle 
-            icon={<GraduationCap size={20} />} 
+            icon={<GraduationCap size={18} />} 
             title={sectionTitles.educationTitle?.[language] || "Formación Académica"} 
           />
           <div className="space-y-1.5"> 
@@ -178,3 +179,4 @@ const PdfCvLayout = ({ profile, interests, language, translations }: PdfCvLayout
 };
 
 export default PdfCvLayout;
+
