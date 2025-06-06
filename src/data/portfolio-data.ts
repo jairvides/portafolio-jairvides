@@ -63,8 +63,8 @@ export const profileData: ProfileData = {
     en: "Technologist in Analysis and Development of Information Systems" 
   },
   location: "Algarrobo, Colombia",
-  profilePictureUrl: "https://placehold.co/300x300.png", 
-  dataAiHint: "professional headshot",
+  profilePictureUrl: "/profile-photo.jpg", 
+  dataAiHint: "profile picture",
   aboutMe: {
     es: "Soy oriundo de Colombia, tengo 34 años y me apasiona estar a la vanguardia de la tecnología. Me caracterizo por ser una persona responsable que se adapta fácilmente al ambiente de trabajo. Me encanta el Desarrollo de Aplicaciones Web, el trabajo en equipo es mi fuerte y cuento con experiencia utilizando diversas tecnologías modernas.",
     en: "I am from Colombia, 34 years old, and passionate about being at the forefront of technology. I am a responsible individual who adapts easily to work environments. I love Web Application Development, teamwork is my strength, and I have experience using various modern technologies."
@@ -223,3 +223,4 @@ export const siteTranslations = {
     copyright: { es: `© ${new Date().getFullYear()} Jair Enrique Vides Berdugo. Todos los derechos reservados.`, en: `© ${new Date().getFullYear()} Jair Enrique Vides Berdugo. All rights reserved.`}
   }
 };
+
