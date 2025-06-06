@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Github, Linkedin, Download, FileText } from 'lucide-react';
+import { Github, Linkedin, Download } from 'lucide-react'; // Removed FileText
 import { profileData, interestsData, siteTranslations } from '@/data/portfolio-data';
 import { useLanguage } from '@/hooks/use-language';
 import LanguageToggle from './LanguageToggle';
@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 // Imports for PDF generation
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import PdfCvLayout from './PdfCvLayout'; // Assuming this is correctly structured for PDF
+import PdfCvLayout from './PdfCvLayout';
 import ReactDOM from 'react-dom/client';
 import {createElement} from 'react';
 
@@ -65,7 +65,7 @@ const LeftSidebar = () => {
         if (section) observer.unobserve(section);
       });
     };
-  }, [navItems]);
+  }, [navItems]); // navItems is static, but kept for completeness
 
   const handleExportPdf = async () => {
     setIsGeneratingPdf(true);
@@ -73,13 +73,12 @@ const LeftSidebar = () => {
     pdfContainer.style.position = 'absolute';
     pdfContainer.style.left = '-9999px'; 
     pdfContainer.style.width = '210mm'; 
-    pdfContainer.style.height = '297mm'; // Enforce A4 height
-    pdfContainer.style.overflow = 'hidden'; // Hide overflow
+    pdfContainer.style.height = '297mm'; 
+    pdfContainer.style.overflow = 'hidden'; 
     document.body.appendChild(pdfContainer);
 
     const root = ReactDOM.createRoot(pdfContainer);
     
-    // Ensure translations are loaded for PdfCvLayout
     const currentTranslations = translations.navigation ? translations : await (async () => {
         const dataModule = await import('@/data/portfolio-data');
         return dataModule.siteTranslations;
@@ -128,7 +127,7 @@ const LeftSidebar = () => {
   };
 
   return (
-    <aside className="fixed left-0 top-0 z-40 flex h-screen w-full flex-col justify-between bg-primary p-6 text-primary-foreground shadow-lg transition-transform duration-300 md:w-1/3 lg:w-[30%] xl:w-1/4 md:translate-x-0">
+    <aside className="hidden md:flex flex-col justify-between bg-primary p-6 text-primary-foreground shadow-lg md:w-1/3 lg:w-[30%] xl:w-1/4 h-screen sticky top-0">
       <div className="flex flex-col space-y-6 items-center md:items-start text-center md:text-left">
         <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden shadow-lg border-2 border-primary-foreground/50 mb-4">
             <Image
@@ -138,6 +137,7 @@ const LeftSidebar = () => {
                 objectFit="cover"
                 className="rounded-full"
                 data-ai-hint={profileData.dataAiHint}
+                priority
             />
         </div>
         <div>
@@ -167,12 +167,12 @@ const LeftSidebar = () => {
                   onClick={() => setActiveSection(item.id)}
                   className={cn(
                     "group flex items-center space-x-3 text-xs font-medium uppercase tracking-wider transition-colors hover:text-accent",
-                    activeSection === item.id ? "text-accent" : "text-primary-foreground/70"
+                    activeSection === item.id ? "text-primary-foreground" : "text-primary-foreground/70" // Adjusted active color
                   )}
                 >
                   <span className={cn(
                     "block h-px transition-all duration-300 group-hover:w-12",
-                     activeSection === item.id ? "w-12 bg-accent" : "w-6 bg-primary-foreground/70"
+                     activeSection === item.id ? "w-12 bg-primary-foreground" : "w-6 bg-primary-foreground/70" // Adjusted active color
                   )}></span>
                   <span>{navTranslations[item.labelKey]?.[language] || item.labelKey}</span>
                 </Link>
@@ -185,12 +185,12 @@ const LeftSidebar = () => {
       <div className="space-y-4 items-center flex flex-col md:items-start">
         <div className="flex space-x-4">
           {profileData.contact?.githubUrl && (
-            <Link href={profileData.contact.githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-primary-foreground/70 hover:text-accent transition-colors">
+            <Link href={profileData.contact.githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
               <Github size={20} />
             </Link>
           )}
           {profileData.contact?.linkedinUrl && (
-            <Link href={profileData.contact.linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-primary-foreground/70 hover:text-accent transition-colors">
+            <Link href={profileData.contact.linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
               <Linkedin size={20} />
             </Link>
           )}
