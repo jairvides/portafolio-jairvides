@@ -7,7 +7,7 @@ import Section from './Section';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Download, Briefcase, GraduationCap, Users, Code, LanguagesIcon, MapPin, UserCircle } from 'lucide-react';
+import { Download, Briefcase, GraduationCap, Users, Code, Languages as LanguagesIcon, MapPin, UserCircle } from 'lucide-react'; // Asegúrate que LanguagesIcon se importe correctamente
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import PdfCvLayout from './PdfCvLayout';
@@ -28,13 +28,12 @@ const ProfileSection = () => {
     pdfContainer.style.position = 'absolute';
     pdfContainer.style.left = '-9999px'; // Position off-screen
     pdfContainer.style.width = '210mm'; // A4 width for rendering
+    // pdfContainer.style.height = '297mm'; // Optional: if PdfCvLayout doesn't enforce its own height via Tailwind
     document.body.appendChild(pdfContainer);
 
     const root = ReactDOM.createRoot(pdfContainer);
     
-    // Ensure translations are loaded before rendering PDF layout
-    // The LanguageProvider should handle this, but direct check might be safer if timing issues occur
-    const currentTranslations = translations || await (async () => {
+    const currentTranslations = translations.navigation ? translations : await (async () => {
         const dataModule = await import('@/data/portfolio-data');
         return dataModule.siteTranslations;
     })();
@@ -49,43 +48,36 @@ const ProfileSection = () => {
     );
 
     // Wait for the component to render fully
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 500)); // Increased delay slightly for complex renders
 
     try {
       const canvas = await html2canvas(pdfContainer, {
         scale: 2, // Increase scale for better quality
-        useCORS: true, // For external images
+        useCORS: true, 
         logging: false,
+        width: pdfContainer.offsetWidth, // Explicitly use rendered width
+        height: pdfContainer.offsetHeight, // Explicitly use rendered height
       });
       
       const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdf = new jsPDF({
+        orientation: 'p', // portrait
+        unit: 'mm', // millimeters
+        format: 'a4', // A4 size
+      });
+
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
       
-      const imgProps = pdf.getImageProperties(imgData);
-      const imgWidth = pdfWidth;
-      const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
-
-      let heightLeft = imgHeight;
-      let position = 0;
-      const pageMargin = 0; // No margin, image covers full page
-
-      pdf.addImage(imgData, 'PNG', pageMargin, position, imgWidth - (pageMargin*2) , imgHeight - (pageMargin*2));
-      heightLeft -= pdfHeight;
-
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', pageMargin, position, imgWidth - (pageMargin*2), imgHeight- (pageMargin*2));
-        heightLeft -= pdfHeight;
-      }
+      // Add the image to the PDF, fitting it to the A4 page dimensions
+      // Since PdfCvLayout is now h-[297mm] (A4 height), the canvas aspect ratio should match A4.
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       
-      pdf.save(`CV_${profileData.fullName.replace(/\s/g, '_')}.pdf`);
+      pdf.save(`CV_${profileData.fullName.replace(/\s/g, '_')}_${language.toUpperCase()}.pdf`);
 
     } catch (error) {
       console.error("Error generating PDF:", error);
-      // Optionally, show a toast notification for the error
+      // Optionally, show a toast notification for the error using useToast hook if implemented
     } finally {
       root.unmount();
       document.body.removeChild(pdfContainer);
@@ -116,7 +108,7 @@ const ProfileSection = () => {
             </div>
           </div>
            <Button onClick={handleExportPdf} className="w-full md:w-auto group" disabled={isGeneratingPdf}>
-            {isGeneratingPdf ? (buttonLabels.exportPdf[language].replace("Exportar","Generando...") || "Generating...") : buttonLabels.exportPdf[language]}
+            {isGeneratingPdf ? (buttonLabels.exportPdf[language].replace(/Exportar|Export/, language === 'es' ? "Generando..." : "Generating...") || "Generating...") : buttonLabels.exportPdf[language]}
             {!isGeneratingPdf && <Download className="ml-2 h-4 w-4 group-hover:animate-bounce" />}
             {isGeneratingPdf && <span className="ml-2 h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-primary"></span>}
           </Button>
