@@ -20,7 +20,7 @@ const Header = () => {
       <div className="container mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center space-x-2">
           <CodeXml className="h-6 w-6 text-primary" />
-          <span className="font-headline text-xl font-bold text-primary">VitaCraft</span>
+          <span className="font-headline text-xl font-bold text-primary">Jair.Dev</span>
         </Link>
         <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
           {navItems.map(item => (

@@ -4,7 +4,7 @@ import { LanguageProvider } from '@/contexts/LanguageContext';
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: 'VitaCraft | JAIR ENRIQUE VIDES BERDUGO',
+  title: 'Portafolio | JAIR ENRIQUE VIDES BERDUGO',
   description: 'Personal portfolio of Jair Enrique Vides Berdugo, Analysis and Development of Information Systems Technologist.',
 };
 
